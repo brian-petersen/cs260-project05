@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="md" type="dark" variant="dark">
       <b-container>
-        <b-navbar-brand to="home">NavBar</b-navbar-brand>
+        <b-navbar-brand to="/home">NavBar</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse" />
 
@@ -13,7 +13,7 @@
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">
-            <b-nav-item v-if="!hasSession" to="login">Sign In</b-nav-item>
+            <b-nav-item v-if="!hasSession" to="/login">Sign In</b-nav-item>
             <b-nav-item v-else @click.stop.prevent="signOut">Sign Out</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -35,10 +35,9 @@ export default {
     })
   },
   methods: {
-    signOut () {
-      debugger
-      this.$store.commit('user/clearSession')
-    }
+    ...mapActions({
+      signOut: 'user/deleteSession'
+    })
   }
 }
 </script>

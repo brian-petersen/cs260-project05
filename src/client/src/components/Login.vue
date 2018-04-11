@@ -1,5 +1,13 @@
 <template>
   <b-container class="pt-4">
+    <b-alert
+      variant="danger"
+      dismissible
+      :show="error !== null"
+      @dismissed="clearError">
+      {{ error }}
+    </b-alert>
+
     <b-form @submit.prevent="login">
       <b-form-group
         label="Username:"
@@ -25,13 +33,19 @@
         />
       </b-form-group>
 
-      <b-button type="submit" variant="primary" class="offset-sm-3">Login</b-button>
+      <b-button
+        type="submit"
+        variant="primary"
+        class="offset-sm-3">
+
+        Login
+      </b-button>
     </b-form>
   </b-container>
 </template>
 
 <script>
-import axios from 'axios'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'Login',
@@ -41,19 +55,24 @@ export default {
       password: '',
     }
   },
+  computed: {
+    ...mapState('user', {
+      error: state => state.error
+    })
+  },
   methods: {
-    async login () {
-      const res = await axios.post('/api/sessions', {
+    login () {
+      this.$store.dispatch('user/createSession', {
         username: this.username,
-        password: this.password
+        password: this.password,
       })
-
-      this.$store.commit('user/setSession', res.data)
-    }
+    },
+    ...mapMutations({
+      clearError: 'user/clearError'
+    })
   }
 }
 </script>
 
 <style>
-
 </style>
