@@ -1,6 +1,6 @@
 <template>
   <b-container class="pt-4">
-    <b-form>
+    <b-form @submit.prevent="login">
       <b-form-group
         label="Username:"
         label-for="username"
@@ -31,12 +31,24 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Login',
   data () {
     return {
       username: '',
       password: '',
+    }
+  },
+  methods: {
+    async login () {
+      const res = await axios.post('/api/sessions', {
+        username: this.username,
+        password: this.password
+      })
+
+      this.$store.commit('user/setSession', res.data)
     }
   }
 }

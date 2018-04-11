@@ -13,7 +13,8 @@
           </b-navbar-nav>
 
           <b-navbar-nav class="ml-auto">
-            <b-nav-item to="login">Login</b-nav-item>
+            <b-nav-item v-if="!hasSession" to="login">Sign In</b-nav-item>
+            <b-nav-item v-else @click.stop.prevent="signOut">Sign Out</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-container>
@@ -24,8 +25,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    ...mapGetters({
+      hasSession: 'user/hasSession'
+    })
+  },
+  methods: {
+    signOut () {
+      debugger
+      this.$store.commit('user/clearSession')
+    }
+  }
 }
 </script>
 
