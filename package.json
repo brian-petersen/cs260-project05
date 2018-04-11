@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"cd src/client && PORT=3000 yarn dev\" \"cd src/server && PORT=3001 yarn dev\""
+  },
+  "dependencies": {
+    "concurrently": "^3.5.1"
+  }
+}
