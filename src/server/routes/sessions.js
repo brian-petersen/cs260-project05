@@ -33,7 +33,7 @@ router.delete('/', isAuthenticated, async (req, res, next) => {
   const { auth } = req.headers
 
   await knex('sessions')
-    .where({ user_id: req.user_id, session: auth })
+    .where({ user_id: req.userId, session: auth })
     .delete()
 
   res.sendStatus(200)

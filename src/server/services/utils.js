@@ -13,7 +13,7 @@ async function isAuthenticated(req, res, next) {
   if (!data)
     return res.sendStatus(400)
 
-  req.user_id = data.user_id
+  req.userId = data.user_id
 
   next()
 }
