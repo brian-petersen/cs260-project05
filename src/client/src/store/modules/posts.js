@@ -17,12 +17,19 @@ export default {
     addPosts (state, payload) {
       payload.posts.forEach(p =>
         Vue.set(state.items, p.id, p))
+    },
+    removePost (state, payload) {
+      Vue.delete(state.items, payload.id)
+    },
+    updatePost (state, payload) {
+      Vue.set(state.items[payload.id], 'caption', payload.caption)
     }
   },
   actions: {
     async getAll (context) {
       const res = await axios.get('/api/posts')
 
+      context.commit('setLoaded')
       context.commit('addPosts', { posts: res.data })
     },
     async create (context, payload) {
@@ -39,6 +46,14 @@ export default {
 
       context.commit('addPosts', { posts: res.data })
       router.push('/home')
+    },
+    async update (context, payload) {
+      await axios.put(`/api/posts/${payload.id}`, { caption: payload.caption })
+      context.commit('updatePost', payload)
+    },
+    async delete (context, payload) {
+      await axios.delete(`/api/posts/${payload.id}`)
+      context.commit('removePost', payload)
     }
   },
   getters: {

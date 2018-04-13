@@ -6,7 +6,16 @@
     <div v-else>
       <ul>
         <li v-for="post in posts" :key="post.id" class="text-light">
-          <div>
+          <div class="image-container">
+            <div
+              v-show="userId === post.user_id"
+              @click="editPost(post.id)"
+              class="edit">Edit</div>
+            <div
+              v-show="userId === post.user_id"
+              @click="deletePost(post.id)"
+              class="delete"
+              title="Delete">&times;</div>
             <img :src="'/api/posts/' + post.id + '/image'" />
           </div>
           <div class="clearfix details">
@@ -20,6 +29,25 @@
         </li>
       </ul>
     </div>
+
+    <b-modal
+      title="Edit Caption"
+      v-model="showEdit"
+      @ok="onOkEdit">
+
+      <b-form @submit.prevent>
+        <b-form-group
+          label="Caption"
+          label-for="caption">
+
+          <b-input
+            id="caption"
+            type="text"
+            v-model="editCaption"
+          />
+        </b-form-group>
+      </b-form>
+    </b-modal>
   </b-container>
 </template>
 
@@ -33,9 +61,17 @@ export default {
     if (!this.postsLoaded)
       this.$store.dispatch('posts/getAll')
   },
+  data () {
+    return {
+      showEdit: false,
+      editId: null,
+      editCaption: '',
+    }
+  },
   computed: {
     ...mapState({
-      postsLoaded: 'posts/loaded',
+      userId: state => state.user.id,
+      postsLoaded: state => state.posts.loaded,
     }),
     ...mapGetters({
       posts: 'posts/sortedPosts',
@@ -44,6 +80,20 @@ export default {
   methods: {
     formatDate (date) {
       return moment(date).fromNow()
+    },
+    deletePost (postId) {
+      this.$store.dispatch('posts/delete', { id: postId })
+    },
+    editPost (postId) {
+      this.showEdit = true
+      this.editId = postId
+      this.editCaption = this.$store.state.posts.items[postId].caption
+    },
+    onOkEdit (e) {
+      this.$store.dispatch('posts/update', {
+        id: this.editId,
+        caption: this.editCaption,
+      })
     }
   }
 }
@@ -72,5 +122,33 @@ ul li img {
 
 .details {
   padding-top: 15px;
+}
+
+.image-container {
+  position: relative;
+}
+
+.edit {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 25px;
+  line-height: 1;
+  text-shadow: 0 0 3px #000;
+  cursor: pointer;
+}
+
+.delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 50px;
+  line-height: 35px;
+  text-shadow: 0 0 3px #000;
+  cursor: pointer;
+}
+
+.edit:hover, .delete:hover {
+  opacity: .7;
 }
 </style>

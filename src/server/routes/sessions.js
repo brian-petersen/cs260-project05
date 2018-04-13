@@ -26,7 +26,7 @@ router.post('/', async (req, res, next) => {
   await knex('sessions')
     .insert({ user_id: data.id, session })
 
-  res.json({ session })
+  res.json({ userId: data.id, session: session })
 })
 
 router.delete('/', isAuthenticated, async (req, res, next) => {

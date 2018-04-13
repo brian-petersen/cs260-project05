@@ -5,18 +5,21 @@ import router from '@/router'
 export default {
   namespaced: true,
   state: {
+    id: null,
     session: null,
     error: null,
   },
   mutations: {
-    setSession (state, payload) {
+    setData (state, payload) {
+      state.id = payload.userId
       state.session = payload.session
       state.error = null
 
       axios.defaults.headers.common['Auth'] = state.session
       router.push('/home')
     },
-    clearSession (state) {
+    clearData (state) {
+      this.id = null
       state.session = null
       state.error = null
 
@@ -34,7 +37,7 @@ export default {
     async createSession (context, payload) {
       try {
         const res = await axios.post('/api/sessions', payload)
-        context.commit('setSession', res.data)
+        context.commit('setData', res.data)
       }
       catch (e) {
         context.commit('setError', { error: 'Invalid username or password' })
@@ -42,7 +45,7 @@ export default {
     },
     async deleteSession (context, payload) {
       await axios.delete('/api/sessions')
-      context.commit('clearSession')
+      context.commit('clearData')
     }
   },
   getters: {

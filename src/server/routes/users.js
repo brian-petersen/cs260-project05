@@ -27,18 +27,17 @@ router.post('/', async (req, res, next) => {
 
   const hash = await bcrypt.hash(password, SALT_ROUNDS)
   data = await knex('users')
-    .returning('id')
     .insert({
       username,
       hash,
-    })
+    }, 'id')
   const id = data[0]
 
   const session = uuid()
   await knex('sessions')
-    .insert({ user_id: data.id, session })
+    .insert({ user_id: id, session })
 
-  res.json({ session })
+  res.json({ userId: id, session: session })
 })
 
 module.exports = router

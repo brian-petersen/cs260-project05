@@ -63,6 +63,47 @@ router.post('/', isAuthenticated, upload.single('image'), async (req, res, next)
   res.json(post)
 })
 
+router.put('/:id', isAuthenticated, async (req, res, next) => {
+  const userId = req.userId
+  const postId = req.params.id
+  const caption = req.body.caption
+
+  const data = await knex('posts')
+    .where('id', postId)
+    .first('user_id', 'image_name')
+
+  if (!data || data.user_id !== userId) {
+    res.sendStatus(400)
+    return
+  }
+
+  await knex('posts')
+    .where('id', postId)
+    .update('caption', caption)
+
+  res.sendStatus(200)
+})
+
+router.delete('/:id', isAuthenticated, async (req, res, next) => {
+  const userId = req.userId
+  const postId = req.params.id
+
+  const data = await knex('posts')
+    .where('id', postId)
+    .first('user_id', 'image_name')
+
+  if (!data || data.user_id !== userId) {
+    res.sendStatus(400)
+    return
+  }
+
+  await knex('posts')
+    .where('id', postId)
+    .delete()
+
+  res.sendStatus(200)
+})
+
 router.get('/:id/image', async (req, res, next) => {
   const { id } = req.params
 
