@@ -11,11 +11,15 @@ export default {
   mutations: {
     setSession (state, payload) {
       state.session = payload.session
+      state.error = null
+
       axios.defaults.headers.common['Auth'] = state.session
       router.push('/home')
     },
     clearSession (state) {
       state.session = null
+      state.error = null
+
       delete axios.defaults.headers.common['Auth']
       router.push('/login')
     },

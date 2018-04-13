@@ -13,6 +13,9 @@ router.post('/', async (req, res, next) => {
     .where({ username })
     .first('id', 'hash')
 
+  if (!data)
+    res.sendStatus(400)
+
   const match = await bcrypt.compare(password, data.hash)
 
   if (!match)

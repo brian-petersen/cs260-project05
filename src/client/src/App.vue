@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="md" type="dark" variant="dark">
       <b-container>
-        <b-navbar-brand to="/home">NavBar</b-navbar-brand>
+        <b-navbar-brand to="/home">PicShare Blockchain</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse" />
 
