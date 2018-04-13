@@ -35,8 +35,11 @@ router.post('/', isAuthenticated, upload.single('image'), async (req, res, next)
   const userId = req.userId
   const { caption } = req.body
 
-  if (!caption || !req.file)
+  if (!req.file) {
     res.sendStatus(400)
+
+    return
+  }
 
   const insertRes = await knex('posts')
     .insert({
