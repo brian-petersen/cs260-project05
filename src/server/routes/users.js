@@ -7,13 +7,6 @@ const knex = require('../services/knex')
 
 const SALT_ROUNDS = 10
 
-// router.get('/', async (req, res, next) => {
-//   const data = await knex('users')
-//     .select('id', 'username', 'created_at')
-
-//   res.json(data)
-// })
-
 router.post('/', async (req, res, next) => {
   const { username, password } = req.body
 

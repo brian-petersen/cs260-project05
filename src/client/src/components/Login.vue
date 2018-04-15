@@ -8,6 +8,7 @@
       {{ error }}
     </b-alert>
 
+    <h3 class="text-center">Login</h3>
     <b-form @submit.prevent="login">
       <b-form-group
         label="Username:"
@@ -41,6 +42,41 @@
         Login
       </b-button>
     </b-form>
+
+    <h3 class="text-center mt-5">Register</h3>
+    <b-form @submit.prevent="register">
+      <b-form-group
+        label="Username:"
+        label-for="registerUsername"
+        horizontal>
+
+        <b-form-input
+          id="registerUsername"
+          type="text"
+          v-model="registerUsername"
+        />
+      </b-form-group>
+
+      <b-form-group
+        label="Password:"
+        label-for="registerPassword"
+        horizontal>
+
+        <b-form-input
+          id="registerPassword"
+          type="password"
+          v-model="registerPassword"
+        />
+      </b-form-group>
+
+      <b-button
+        type="submit"
+        variant="primary"
+        class="offset-sm-3">
+
+        Register
+      </b-button>
+    </b-form>
   </b-container>
 </template>
 
@@ -53,6 +89,8 @@ export default {
     return {
       username: '',
       password: '',
+      registerUsername: '',
+      registerPassword: '',
     }
   },
   computed: {
@@ -65,6 +103,12 @@ export default {
       this.$store.dispatch('user/createSession', {
         username: this.username,
         password: this.password,
+      })
+    },
+    register() {
+      this.$store.dispatch('user/register', {
+        username: this.registerUsername,
+        password: this.registerPassword,
       })
     },
     ...mapMutations({

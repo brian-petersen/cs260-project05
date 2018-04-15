@@ -46,6 +46,15 @@ export default {
     async deleteSession (context, payload) {
       await axios.delete('/api/sessions')
       context.commit('clearData')
+    },
+    async register (context, payload) {
+      try {
+        const res = await axios.post('/api/users', payload)
+        context.commit('setData', res.data)
+      }
+      catch (e) {
+        context.commit('setError', { error: 'Username already taken' })
+      }
     }
   },
   getters: {
