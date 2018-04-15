@@ -50,6 +50,11 @@
         </b-form-group>
       </b-form>
     </b-modal>
+
+    <footer>
+      Source code available on
+      <a href="https://github.com/brian-petersen/cs260-project05" target="_blank">GitHub</a>
+    </footer>
   </div>
 </template>
 
@@ -102,5 +107,10 @@ export default {
 <style>
 body {
   background: url(./assets/bg.png)
+}
+
+footer {
+  text-align: center;
+  margin: 50px 15px;
 }
 </style>
